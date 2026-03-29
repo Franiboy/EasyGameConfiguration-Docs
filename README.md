@@ -425,5 +425,13 @@ For any inquiries, suggestions, or troubleshooting, please reach out via email: 
 - Fixed a crash that could occur when setting a property whose category or key was not yet initialized
 - Fixed a bug where modifying Vector2D properties in the editor would incorrectly trigger a refresh of Vector Blueprint nodes instead of Vector2D nodes
 - Improved memory management across the plugin
+  - Added `NativeDestruct()` override to all 9 widget classes to properly clean up delegates and prevent memory leaks when widgets are destroyed
   - Resolved multiple memory leaks in configuration loading, saving, and delegate registration
   - Property lookups in Blueprint functions now properly release allocated memory after use
+- Added null-checks to all `Get {Type} Widget` functions to gracefully handle missing player controllers instead of crashing
+- Initialized all temporary widget pointers in `Get All {Type} Widgets` functions to prevent undefined behavior from uninitialized pointers
+- Fixed uninitialized `SaveGameObject` pointers in configuration loading and saving functions that could cause crashes if `Cast` returned null
+- Added null-check before `GenerateHashOfSaveGame` call to prevent crash when save game loading fails but anti-cheat detection is enabled
+- Fixed unnecessary `FString` dereference in `GetSettingIntern` and legacy setter functions that could cause incorrect string handling
+- Fixed `FLinearColor` default value to use alpha=1 (fully opaque) instead of alpha=0 (fully transparent), preventing invisible default colors
+- Refactored delegate lookup pattern in `CallOnChangeDelegate` to use safe intermediate variables instead of fragile chained `Find()->Find()` calls, eliminating redundant map lookups and improving robustness
