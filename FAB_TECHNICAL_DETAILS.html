@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>EGC Fab Technical Details</title></head>
+<body style="font-family: sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6;">
+
+<h2>Code Modules</h2>
+<ul>
+<li><strong>EasyGameConfiguration</strong> [Runtime] - Editor-only functionality (Project Settings UI, Blueprint node refresh) is guarded by WITH_EDITOR and automatically excluded from packaged builds.</li>
+</ul>
+
+<p><strong>Number of C++ Classes:</strong> 11 (settings, structs, enums, delegates, widgets, read/write I/O)</p>
+<p><strong>Number of Blueprint Functions:</strong> 94 (get, set, reset, delegate, widget per type)</p>
+<p><strong>Number of Blueprint Widgets:</strong> 9 (one default widget per data type, overridable per property)</p>
+<p><strong>Supported Data Types:</strong> 9 (Boolean, Integer, Float, String, Vector2D, Vector, Color, Rotator, Transform)</p>
+<p><strong>External Dependencies:</strong> None - uses only built-in UE modules</p>
+<p><strong>Network Replicated:</strong> No</p>
+
+<h2>Supported Platforms</h2>
+<ul>
+<li><strong>Development:</strong> Win64</li>
+<li><strong>Target Build:</strong> Win64, Android, Linux, LinuxArm64</li>
+</ul>
+
+<h2>Documentation</h2>
+<p>Comprehensive documentation with setup guides and examples: <a href="https://github.com/Franiboy/EasyGameConfiguration-Docs">EasyGameConfiguration-Docs</a></p>
+
+<h2>Example Project</h2>
+<p>No standalone example project included. The <a href="https://www.fab.com/listings/d4f0c20d-2219-42d3-a87c-324416322d50">free version</a> includes 10 pre-configured example properties and can be used to evaluate the full workflow before purchasing.</p>
+
+<h2>Games Using Similar Configuration Systems</h2>
+<ul>
+<li><strong>Minecraft</strong> - world generation and server settings via config files</li>
+<li><strong>The Elder Scrolls V: Skyrim</strong> - graphics, controls, and game behavior via .ini files</li>
+<li><strong>ARK: Survival Evolved</strong> - gameplay and server configuration via .ini files</li>
+<li><strong>Counter-Strike 2</strong> - keybindings, crosshair, and graphics via config files</li>
+<li><strong>Grand Theft Auto V</strong> - settings and mod configuration via .ini files</li>
+<li><strong>Satisfactory</strong> - production and gameplay parameters via config files</li>
+</ul>
+
+</body>
+</html>
