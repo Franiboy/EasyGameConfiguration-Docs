@@ -35,9 +35,9 @@
 13. [Frequently Asked Questions (FAQ)](#13-frequently-asked-questions-faq)
 14. [Contact Information](#14-contact-information)
 15. [Patch Notes](#15-patch-notes)
-    - [15.1 Version 1.1](#151-version-11)
+    - [15.1 Version 1.3](#151-version-13)
     - [15.2 Version 1.2](#152-version-12)
-    - [15.3 Version 1.3](#153-version-13)
+    - [15.3 Version 1.1](#153-version-11)
 
 ---
 
@@ -71,7 +71,7 @@ EGC comes packed with a variety of features designed to make working with config
 
 Before using EGC, ensure you have the following:
 
-- Unreal Engine 5.1 or higher
+- Unreal Engine 5.5 or higher
 - Basic knowledge of Unreal Blueprints or C++
 
 ### Steps to Install EGC
@@ -356,7 +356,7 @@ These games, with their need for server settings and customization options, high
 ## 12. Technical Information
 
 - **Plugin Version:** 1.3
-- **Engine Version:** Unreal Engine 5.5 (also supports 5.1 and 5.2)
+- **Engine Version:** Unreal Engine 5.5
 - **Code Modules:** EGC - EasyGameConfiguration [Runtime]
 - **Number of Blueprints:** 9 (default widget Blueprints)
 - **Number of Blueprint Nodes:** 94
@@ -398,28 +398,7 @@ For any inquiries, suggestions, or troubleshooting, please reach out via email: 
 
 ## 15. Patch Notes
 
-### 15.1 Version 1.1
-
-- Updated Project for Fab
-- Updated Project for Unreal Engine 5.5.0
-
-### 15.2 Version 1.2
-
-- Extended support for Unreal Engine 5.2 and 5.1
-- Improved savegame security
-- Added anti-cheat detection for saved games
-- Added toggle to enable/disable anti-cheating
-- Cheat value can be configured for each property
-  - if enabled and a cheat is detected, this value will be set
-- Added keywords for all major plugin methods
-  - "EGC" is now a known keyword
-- Improved Project Settings UI
-  - Convert all toggles with data to inline toggles
-- Fixed bug where inline toggles were not saved immediately
-- New Blueprint Nodes Reset {Type} Setting added for all types
-  - reset individual properties to the default value
-
-### 15.3 Version 1.3
+### 15.1 Version 1.3
 
 - Fixed a bug where Vector properties with non-uniform default values (e.g., X=1, Y=2, Z=3) were incorrectly serialized, causing the Y and Z components to always use the X value
 - Fixed a crash that could occur when setting a property whose category or key was not yet initialized
@@ -435,3 +414,23 @@ For any inquiries, suggestions, or troubleshooting, please reach out via email: 
 - Fixed unnecessary `FString` dereference in `GetSettingIntern` and legacy setter functions that could cause incorrect string handling
 - Fixed `FLinearColor` default value to use alpha=1 (fully opaque) instead of alpha=0 (fully transparent), preventing invisible default colors
 - Refactored delegate lookup pattern in `CallOnChangeDelegate` to use safe intermediate variables instead of fragile chained `Find()->Find()` calls, eliminating redundant map lookups and improving robustness
+
+### 15.2 Version 1.2
+
+- Improved savegame security
+- Added anti-cheat detection for saved games
+- Added toggle to enable/disable anti-cheating
+- Cheat value can be configured for each property
+  - if enabled and a cheat is detected, this value will be set
+- Added keywords for all major plugin methods
+  - "EGC" is now a known keyword
+- Improved Project Settings UI
+  - Convert all toggles with data to inline toggles
+- Fixed bug where inline toggles were not saved immediately
+- New Blueprint Nodes Reset {Type} Setting added for all types
+  - reset individual properties to the default value
+
+### 15.3 Version 1.1
+
+- Updated Project for Fab
+- Updated Project for Unreal Engine 5.5.0
