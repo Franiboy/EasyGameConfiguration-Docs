@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>EGC Changelog</title></head>
+<body style="font-family: sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6;">
+
+<h2>v1.3 - Stability &amp; Memory</h2>
+
+<p><strong>Support starts from Unreal Engine 5.5 onwards.</strong></p>
+
+<p><strong>Bug Fixes</strong></p>
+<ul>
+<li>Fixed Vector serialization: Y and Z components of default values incorrectly used the X value.</li>
+<li>Fixed null-pointer crash when setting a property with uninitialized category or key.</li>
+<li>Fixed Vector2D editor refresh incorrectly triggering Vector BP node recompilation.</li>
+<li>Fixed FLinearColor default alpha from 0 to 1 (colors were invisible by default).</li>
+<li>Fixed false "Failed to create save game object" error during anti-cheat detection.</li>
+<li>Fixed stale config data persisting between sessions (CleanUp now empties all caches).</li>
+<li>Fixed unnecessary FString dereference in legacy setters and GetSettingIntern.</li>
+<li>Added null-check before GenerateHashOfSaveGame to prevent crash on missing data.</li>
+</ul>
+
+<p><strong>Memory Management</strong></p>
+<ul>
+<li>Replaced raw pointer allocations with TUniquePtr across 91 Blueprint function call-sites -- eliminates memory leaks.</li>
+<li>Converted 18 heap-allocated TMap delegate registrations to stack variables.</li>
+<li>Changed GetCurrentPropertysFromFile/SaveGame return types from pointer to value (no heap allocation).</li>
+<li>Added NativeDestruct() to all 9 widget classes to prevent widget memory leaks.</li>
+<li>Initialized all SaveGameObject and TempWidget pointers to nullptr.</li>
+</ul>
+
+<p><strong>Quality of Life</strong></p>
+<ul>
+<li>Refactored CallOnChangeDelegate to use safe intermediate lookups.</li>
+<li>Added null-checks to all Get{Type}Widget functions.</li>
+</ul>
+
+<hr>
+
+<h2>v1.2 - Multi-Engine Support</h2>
+
+<ul>
+<li>Added support for Unreal Engine 5.1 and 5.2.</li>
+<li>Updated packaging process for multi-version distribution.</li>
+</ul>
+
+<hr>
+
+<h2>v1.1 - Anti-Cheat, Reset &amp; Polish</h2>
+
+<p><strong>New Features</strong></p>
+<ul>
+<li>Anti-Cheat system: Hash-based validation for save game data with configurable per-property cheat detection values.</li>
+<li>Reset functionality: Reset individual properties or all properties at once to their default values.</li>
+<li>Blueprint keyword "EGC" registered for all methods -- find any node by searching "EGC" in the Blueprint editor.</li>
+</ul>
+
+<p><strong>Improvements</strong></p>
+<ul>
+<li>Simplified property struct internals for cleaner data handling.</li>
+<li>Improved save game process for plugin settings.</li>
+<li>Code cleanup: removed unnecessary code and unused .ini files.</li>
+<li>Added copyright headers to all source files.</li>
+</ul>
+
+<hr>
+
+<h2>v1.0 - Initial Release</h2>
+
+<p><strong>Core Features</strong></p>
+<ul>
+<li>9 supported data types: Boolean, Integer, Float, String, Vector2D, Vector, Color, Rotator, Transform.</li>
+<li>Context-free Blueprint access: Get/Set any property from anywhere with a single node.</li>
+<li>Dual API: Enum-based (recommended) and string-based (legacy) access patterns.</li>
+<li>Auto-generated .ini configuration files.</li>
+<li>Save game support for properties not editable by users.</li>
+<li>Delegate system: Subscribe to property changes per type.</li>
+<li>Automatic UI widget rendering for all defined properties with per-property style overrides.</li>
+<li>Editor integration: Custom Project Settings tab, Blueprint editor buttons, configurable shortcuts.</li>
+<li>Property validation with allowed/forbidden value constraints.</li>
+<li>Multi-save support for per-player or per-server configurations.</li>
+<li>Platforms: Win64, Android, Linux, LinuxArm64.</li>
+</ul>
+
+</body>
+</html>
