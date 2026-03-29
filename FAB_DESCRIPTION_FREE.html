@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>EGC Free - Fab Description</title></head>
+<body style="font-family: sans-serif; max-width: 800px; margin: 40px auto; line-height: 1.6;">
+
+<p><strong>This is the free version of EGC - EasyGameConfiguration.</strong> All features are included, limited to 10 properties. For unlimited properties (250 per type), get the <a href="https://www.fab.com/listings/4cfe61bb-79d9-4f22-84f4-57ecc73cc56a">full version</a>.</p>
+
+<p>An easy-to-integrate Blueprint and C++ library for custom game configurations. Define your settings once in the Project Settings, then read, write, and react to changes from anywhere with a single Blueprint node - no references, categories, or key strings needed.</p>
+
+<h2>How It Works</h2>
+<ol>
+<li><strong>Define</strong> your properties in Project Settings (type, default value, display name, description).</li>
+<li><strong>Use</strong> Get/Set nodes in any Blueprint or C++ class - one node per operation, no setup needed.</li>
+<li><strong>Ship</strong> - the .ini file is generated automatically. Players can tweak exposed settings, you keep full control over hidden and constant values.</li>
+</ol>
+
+<h2>Key Features</h2>
+<ul>
+<li><strong>One-Node Access:</strong> Read, write, or subscribe to property changes from anywhere in your project - no object references or string lookups required.</li>
+<li><strong>Per-Property Control:</strong> Save location, display name, description, editability, constant flag, and hidden flag - all configurable per property directly in the editor.</li>
+<li><strong>Save &amp; Load:</strong> Create, load, reset, and unload configuration files via Blueprint, with native multi-save support (e.g. per-player or per-server configs).</li>
+<li><strong>Auto-Generated .ini Files:</strong> Configuration files are created and managed automatically - no manual file handling needed.</li>
+<li><strong>Auto-Generated Settings UI:</strong> Render UI widgets for all your properties with a single function call. Each property can override its widget style or type individually.</li>
+<li><strong>Tamper Protection:</strong> Optional hash-based validation detects when players manually edit save data. You define per-property fallback values that are used when tampering is detected.</li>
+<li><strong>9 Data Types:</strong> Boolean, Integer, Float, String, Vector2D, Vector, Color, Rotator, Transform.</li>
+</ul>
+
+<h2>Free vs Full Version</h2>
+<ul>
+<li><strong>Free:</strong> All features, limited to <strong>10 properties</strong>. Includes 10 pre-configured example properties to get started immediately.</li>
+<li><strong>Full:</strong> Up to <strong>250 properties per type</strong>. Available <a href="https://www.fab.com/listings/4cfe61bb-79d9-4f22-84f4-57ecc73cc56a">here</a>.</li>
+</ul>
+
+<h2>Use Cases</h2>
+<ul>
+<li><strong>Game Settings</strong> - Let players adjust difficulty, graphics, audio, or gameplay parameters through an auto-generated .ini file.</li>
+<li><strong>Server Configurations</strong> - Modify spawn rates, player limits, or world rules per server without rebuilding.</li>
+<li><strong>Hidden Properties</strong> - Store values that only your code can read and write - invisible in the .ini file. Useful for internal state, progression data, or save-game-like features.</li>
+<li><strong>Constants</strong> - Define read-only values accessible from anywhere in the project. Players can see them in the .ini but cannot change them.</li>
+</ul>
+
+<h2>Code Modules</h2>
+<ul>
+<li><strong>EasyGameConfiguration</strong> [Runtime] - All get/set/reset/delegate/widget functionality. Editor-only features (settings UI, Blueprint node refresh) are automatically excluded from packaged builds.</li>
+</ul>
+
+<h2>Supported Platforms</h2>
+<ul>
+<li><strong>Development:</strong> Win64</li>
+<li><strong>Target Build:</strong> Win64, Android, Linux, LinuxArm64</li>
+</ul>
+
+<h2>Documentation</h2>
+<p>Full documentation with examples and setup guides: <a href="https://github.com/Franiboy/EasyGameConfiguration-Docs">EasyGameConfiguration-Docs</a></p>
+
+<h2>Contact</h2>
+<p>For feature requests or bug reports, reach out via the <a href="https://www.fab.com/listings/d4f0c20d-2219-42d3-a87c-324416322d50">Fab product page</a> or email.</p>
+
+</body>
+</html>
