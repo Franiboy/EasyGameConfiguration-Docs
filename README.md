@@ -131,17 +131,17 @@ Once you have at least one category, you can create properties:
 
 EGC supports 9 data types:
 
-| EGC Type | Unreal Engine Type | Example |
-|----------|-------------------|---------|
-| String | `FString` | `"Hello World"` |
-| Integer | `int` | `42` |
-| Float | `float` | `3.14` |
-| Boolean | `bool` | `true` / `false` |
-| Vector | `FVector` | `(X=1.0, Y=2.0, Z=3.0)` |
-| Vector2D | `FVector2D` | `(X=1.0, Y=2.0)` |
-| Rotator | `FRotator` | `(Pitch=0, Yaw=90, Roll=0)` |
-| Color | `FLinearColor` | `(R=1.0, G=0.5, B=0.0, A=1.0)` |
-| Transform | `FTransform` | Location + Rotation + Scale |
+| EGC Type  | Unreal Engine Type | Example                        |
+| --------- | ------------------ | ------------------------------ |
+| String    | `FString`          | `"Hello World"`                |
+| Integer   | `int`              | `42`                           |
+| Float     | `float`            | `3.14`                         |
+| Boolean   | `bool`             | `true` / `false`               |
+| Vector    | `FVector`          | `(X=1.0, Y=2.0, Z=3.0)`        |
+| Vector2D  | `FVector2D`        | `(X=1.0, Y=2.0)`               |
+| Rotator   | `FRotator`         | `(Pitch=0, Yaw=90, Roll=0)`    |
+| Color     | `FLinearColor`     | `(R=1.0, G=0.5, B=0.0, A=1.0)` |
+| Transform | `FTransform`       | Location + Rotation + Scale    |
 
 Each type supports up to **250 properties** (Property0 through Property249).
 
@@ -156,11 +156,13 @@ All EGC Blueprint nodes can be found by searching for **"EGC"** in the Blueprint
 The recommended way to access properties is via their type-safe enum. When you create a property in the Project Settings, EGC assigns it to an enum value (e.g., `E_StringProperties::Property0`). The enum display name is configured in the settings.
 
 **Setting a value:**
+
 - Use the **Set {Type} Setting** node (e.g., `Set String Setting`, `Set Integer Setting`)
 - Input: the property enum + the new value
 - Output: Success boolean
 
 **Getting a value:**
+
 - Use the **Get {Type} Setting** node (e.g., `Get String Setting`, `Get Float Setting`)
 - Input: the property enum
 - Output: Success boolean + the current value
@@ -178,18 +180,18 @@ For dynamic or data-driven scenarios, you can also access properties by their st
 
 For each of the 9 data types, the following Blueprint nodes are available:
 
-| Node | Description |
-|------|-------------|
-| **Set {Type} Setting** | Set a property value by enum |
-| **Set {Type} Setting Legacy** | Set a property value by name + category |
-| **Get {Type} Setting** | Read a property value by enum |
-| **Get {Type} Setting Legacy** | Read a property value by name + category |
-| **Reset {Type} Setting** | Reset a property to its default value |
-| **On {Type} Setting Changed** | Get a delegate to listen for changes (see [Section 6](#6-listening-for-property-changes)) |
-| **On {Type} Setting Changed Legacy** | Same, by name + category |
-| **Get {Type} Property Configuration** | Read the full property config (default value, category, attributes) |
-| **Get {Type} Widget For Property** | Get the widget instance for a specific property |
-| **Get All {Type} Widgets** | Get all widget instances for this type |
+| Node                                  | Description                                                                               |
+| ------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Set {Type} Setting**                | Set a property value by enum                                                              |
+| **Set {Type} Setting Legacy**         | Set a property value by name + category                                                   |
+| **Get {Type} Setting**                | Read a property value by enum                                                             |
+| **Get {Type} Setting Legacy**         | Read a property value by name + category                                                  |
+| **Reset {Type} Setting**              | Reset a property to its default value                                                     |
+| **On {Type} Setting Changed**         | Get a delegate to listen for changes (see [Section 6](#6-listening-for-property-changes)) |
+| **On {Type} Setting Changed Legacy**  | Same, by name + category                                                                  |
+| **Get {Type} Property Configuration** | Read the full property config (default value, category, attributes)                       |
+| **Get {Type} Widget For Property**    | Get the widget instance for a specific property                                           |
+| **Get All {Type} Widgets**            | Get all widget instances for this type                                                    |
 
 Replace `{Type}` with: String, Integer, Float, Boolean, Vector, Vector2D, Rotator, Color, or Transform.
 
@@ -213,6 +215,7 @@ EGC provides a delegate system that lets you react whenever a property value cha
 4. Your event receives the **Old Value** and **New Value** as parameters.
 
 **Example:** To listen for changes to a Float property:
+
 1. Call `On Float Setting Changed` with the property enum.
 2. Bind to the returned delegate's `On Float Setting Changed Signature` event.
 3. Your bound event fires with `(float OldValue, float NewValue)` whenever that property is updated.
@@ -225,11 +228,11 @@ Legacy variants (`On {Type} Setting Changed Legacy`) work the same way using str
 
 EGC provides three core nodes for managing configuration files, found under **EasyGameConfiguration > General**:
 
-| Node | Description |
-|------|-------------|
+| Node                       | Description                                                                                                                                                                 |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Create Or Load Setting** | Creates a new .ini configuration file or loads an existing one. Takes a `ConfigName` (the filename without extension) and an optional `OverrideWithCurrentProperties` flag. |
-| **Unload Setting** | Unloads the current configuration. The optional `KeepProperties` flag determines whether current values are retained in memory. |
-| **Reset Setting** | Resets all properties to their default values as defined in the Project Settings. |
+| **Unload Setting**         | Unloads the current configuration. The optional `KeepProperties` flag determines whether current values are retained in memory.                                             |
+| **Reset Setting**          | Resets all properties to their default values as defined in the Project Settings.                                                                                           |
 
 **Typical workflow:**
 
@@ -305,21 +308,21 @@ One of the most powerful features of EGC is the ability to automatically generat
 
 **Nodes:**
 
-| Node | Description |
-|------|-------------|
-| **Get All Widgets** | Returns all widget instances for all property types, sorted by Widget Index. Takes a Player Controller as input. |
-| **Get All {Type} Widgets** | Returns all widget instances for a specific type (e.g., `Get All String Widgets`). |
-| **Get {Type} Widget For Property** | Returns the widget for a single specific property. |
+| Node                               | Description                                                                                                      |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Get All Widgets**                | Returns all widget instances for all property types, sorted by Widget Index. Takes a Player Controller as input. |
+| **Get All {Type} Widgets**         | Returns all widget instances for a specific type (e.g., `Get All String Widgets`).                               |
+| **Get {Type} Widget For Property** | Returns the widget for a single specific property.                                                               |
 
 By default, EGC creates a widget based on the data type of each property:
 
-| Type | Default Widget |
-|------|---------------|
-| Boolean | Checkbox |
-| String | Text input field |
-| Integer / Float | Slider or numeric input field |
-| Vector / Vector2D / Rotator / Transform | Numeric input fields per component |
-| Color | Color picker / numeric input fields |
+| Type                                    | Default Widget                      |
+| --------------------------------------- | ----------------------------------- |
+| Boolean                                 | Checkbox                            |
+| String                                  | Text input field                    |
+| Integer / Float                         | Slider or numeric input field       |
+| Vector / Vector2D / Rotator / Transform | Numeric input fields per component  |
+| Color                                   | Color picker / numeric input fields |
 
 Each default widget provides a **Blueprint Implementable Event** that fires when the property value changes, allowing you to add custom logic in the widget's Event Graph.
 
@@ -377,7 +380,7 @@ A: Yes, you can override default widgets for each property by creating a Widget 
 A: Yes, EGC allows the use of multiple save slots. Call `Create Or Load Setting` with different config names to create and switch between configuration profiles.
 
 **Q: What is the maximum number of properties per type?**
-A: Each data type supports up to 250 properties (Property0 through Property249). With 9 data types, this gives you a total of 2,250 possible properties.
+A: Each data type supports up to 250 properties. With 9 data types, this gives you a total of 2,250 possible properties.
 
 **Q: What is the difference between enum-based and legacy access?**
 A: Enum-based access (e.g., `Set String Setting`) uses type-safe enums for compile-time safety and auto-complete. Legacy access (e.g., `Set String Setting Legacy`) uses string-based property name + category, which is useful when property names are determined at runtime. The enum-based approach is recommended for most use cases.
