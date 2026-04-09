@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - On Changed Delegates | Gallery 06</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background */
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none; z-index: 0;
+  }
+  .bg-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .main {
+    position: relative; z-index: 1;
+    width: 1920px; height: 1080px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* ── Title ── */
+  .title-section {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding-top: 28px; padding-bottom: 6px;
+    flex-shrink: 0;
+  }
+  .title-heading {
+    font-size: 50px; font-weight: 800; line-height: 1.15;
+    background: linear-gradient(180deg, #fff 15%, #909090 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .title-subtitle {
+    font-size: 16px; color: rgba(255,255,255,0.30);
+  }
+
+  /* ── Workflow area ── */
+  .workflow {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    flex: 1;
+    position: relative;
+    width: 100%;
+  }
+
+  /* Continuous vertical timeline line */
+  .workflow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    bottom: 5%;
+    width: 2px;
+    background: linear-gradient(to bottom,
+      transparent,
+      rgba(245,158,11,0.10) 12%,
+      rgba(245,158,11,0.10) 88%,
+      transparent);
+    transform: translateX(-1px);
+    z-index: 0;
+  }
+
+  /* Each workflow row: LEFT | TIMELINE | RIGHT */
+  .wf-row {
+    display: flex; align-items: center;
+    width: 1440px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wf-side {
+    flex: 1;
+    display: flex; align-items: center;
+    min-height: 180px;
+    padding: 6px 0;
+  }
+  .wf-side-left  { justify-content: flex-end;   padding-right: 44px; }
+  .wf-side-right { justify-content: flex-start;  padding-left: 44px; }
+
+  /* Timeline centre column */
+  .wf-center {
+    width: 56px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .wf-node {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 800;
+  }
+
+  .node-amber   { background: rgba(245,158,11,0.15); border: 2px solid rgba(245,158,11,0.50); color: #f59e0b; }
+  .node-emerald { background: rgba(16,185,129,0.15);  border: 2px solid rgba(16,185,129,0.50); color: #10b981; }
+  .node-cyan    { background: rgba(6,182,212,0.15);   border: 2px solid rgba(6,182,212,0.50);  color: #06b6d4; }
+
+  /* Arrow connector between rows */
+  .wf-arrow {
+    display: flex; align-items: center; justify-content: center;
+    height: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Screenshots ── */
+  .screenshot-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .screenshot-wrap::after {
+    content: '';
+    position: absolute; inset: -10px;
+    border-radius: 18px;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .glow-amber::after   { background: radial-gradient(ellipse, rgba(245,158,11,0.07) 0%, transparent 70%); }
+  .glow-cyan::after     { background: radial-gradient(ellipse, rgba(6,182,212,0.07) 0%, transparent 70%); }
+
+  .screenshot {
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.50);
+    max-height: 210px;
+    max-width: 520px;
+    width: auto; height: auto;
+    display: block;
+  }
+
+  /* ── Description card ── */
+  .desc-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 18px 24px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .desc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px; font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .desc-text {
+    font-size: 13px; color: rgba(255,255,255,0.40); line-height: 1.55;
+  }
+  .desc-param {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: rgba(255,255,255,0.22);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .desc-amber   { border-left: 3px solid #f59e0b; }
+  .desc-amber   .desc-title { color: #fbbf24; }
+
+  .desc-emerald { border-left: 3px solid #10b981; }
+  .desc-emerald .desc-title { color: #34d399; }
+
+  .desc-cyan    { border-left: 3px solid #06b6d4; }
+  .desc-cyan    .desc-title { color: #22d3ee; }
+
+  /* ── Flow visualization (step 2) ── */
+  .flow-visual {
+    display: flex; align-items: center; gap: 0;
+    max-width: 520px;
+  }
+
+  .flow-box {
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .flow-box-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .flow-box-sub {
+    font-size: 11px; color: rgba(255,255,255,0.28);
+    line-height: 1.4;
+  }
+
+  .flow-box-amber {
+    border-color: rgba(245,158,11,0.20);
+    background: rgba(245,158,11,0.04);
+  }
+  .flow-box-amber .flow-box-title { color: #fbbf24; }
+
+  .flow-box-emerald {
+    border-color: rgba(16,185,129,0.20);
+    background: rgba(16,185,129,0.04);
+  }
+  .flow-box-emerald .flow-box-title { color: #34d399; }
+
+  .flow-box-violet {
+    border-color: rgba(139,92,246,0.20);
+    background: rgba(139,92,246,0.04);
+  }
+  .flow-box-violet .flow-box-title { color: #a78bfa; }
+
+  .flow-arrow-inline {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; flex-shrink: 0;
+  }
+
+  /* ── Feature strip ── */
+  .feature-strip {
+    display: flex; align-items: center; justify-content: center;
+    gap: 24px;
+    padding: 8px 0 0;
+    flex-shrink: 0;
+  }
+  .feat-pill {
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.28);
+    padding: 4px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.015);
+  }
+  .feat-sep {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.10);
+    flex-shrink: 0;
+  }
+
+  /* ── Bottom bar ── */
+  .bottom-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding: 12px 0 22px;
+    flex-shrink: 0;
+  }
+  .bottom-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- ── Title ── -->
+  <div class="title-section">
+    <div class="title-heading">On Changed Delegates</div>
+    <div class="title-subtitle">React to property changes in real-time &mdash; bind once, get notified on every update</div>
+  </div>
+
+  <!-- ── Workflow ── -->
+  <div class="workflow">
+
+    <!-- Row 1  Screenshot LEFT  ·  Description RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="screenshot-wrap glow-amber">
+          <img src="assets/Delegate.png" class="screenshot" alt="On Float Setting Changed (Enum)">
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-amber">1</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="desc-card desc-amber">
+          <div class="desc-title">Register Delegate</div>
+          <div class="desc-text">Call On*SettingChanged to get a delegate object for any property. Works for all 9 data types. Registration is idempotent &mdash; safe to call multiple times.</div>
+          <div class="desc-param">Property (Enum) &middot; Success &middot; Delegate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 → 2 -->
+    <div class="wf-arrow">
+      <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+        <line x1="10" y1="0" x2="10" y2="22" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+        <polygon points="5,20 10,27 15,20" fill="rgba(245,158,11,0.30)"/>
+      </svg>
+    </div>
+
+    <!-- Row 2  Description LEFT  ·  Flow visual RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="desc-card desc-emerald">
+          <div class="desc-title">Bind &amp; React</div>
+          <div class="desc-text">Bind your Blueprint event to the delegate's OnChanged event. When any Set*Setting changes the value, your callback fires automatically with old and new values.</div>
+          <div class="desc-param">OnChanged &middot; Old Value &middot; New Value</div>
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-emerald">2</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="flow-visual">
+          <div class="flow-box flow-box-amber">
+            <div class="flow-box-title">Set*Setting()</div>
+            <div class="flow-box-sub">value changes</div>
+          </div>
+          <div class="flow-arrow-inline">
+            <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+              <line x1="0" y1="8" x2="20" y2="8" stroke="rgba(16,185,129,0.40)" stroke-width="1.5"/>
+              <polygon points="18,4 26,8 18,12" fill="rgba(16,185,129,0.45)"/>
+            </svg>
+          </div>
+          <div class="flow-box flow-box-emerald">
+            <div class="flow-box-title">OnChanged</div>
+            <div class="flow-box-sub">delegate fires</div>
+          </div>
+          <div class="flow-arrow-inline">
+            <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
+              <line x1="0" y1="8" x2="20" y2="8" stroke="rgba(139,92,246,0.40)" stroke-width="1.5"/>
+              <polygon points="18,4 26,8 18,12" fill="rgba(139,92,246,0.45)"/>
+            </svg>
+          </div>
+          <div class="flow-box flow-box-violet">
+            <div class="flow-box-title">Your Handler</div>
+            <div class="flow-box-sub">reacts to change</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 2 → 3 -->
+    <div class="wf-arrow">
+      <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+        <line x1="10" y1="0" x2="10" y2="22" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+        <polygon points="5,20 10,27 15,20" fill="rgba(245,158,11,0.30)"/>
+      </svg>
+    </div>
+
+    <!-- Row 3  Screenshot LEFT  ·  Description RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="screenshot-wrap glow-cyan">
+          <img src="assets/DelegateLegacy.png" class="screenshot" alt="On Float Setting Changed Legacy (String)">
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-cyan">3</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="desc-card desc-cyan">
+          <div class="desc-title">Legacy String API</div>
+          <div class="desc-text">Same delegate system using string-based property names and categories. Full flexibility for dynamic or data-driven properties.</div>
+          <div class="desc-param">Property (String) &middot; Category &middot; Success &middot; Delegate</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Feature strip ── -->
+  <div class="feature-strip">
+    <span class="feat-pill">9 Types</span>
+    <div class="feat-sep"></div>
+    <span class="feat-pill">Per-Property</span>
+    <div class="feat-sep"></div>
+    <span class="feat-pill">Idempotent Registration</span>
+    <div class="feat-sep"></div>
+    <span class="feat-pill">Automatic Dispatch</span>
+  </div>
+
+  <!-- ── Bottom bar ── -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div>
+
+</body>
+</html>

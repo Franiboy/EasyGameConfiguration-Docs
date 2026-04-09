@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - Save & Load System | Gallery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background */
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none; z-index: 0;
+  }
+  .bg-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .main {
+    position: relative; z-index: 1;
+    width: 1920px; height: 1080px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* ── Title ── */
+  .title-section {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding-top: 28px; padding-bottom: 6px;
+    flex-shrink: 0;
+  }
+  .title-heading {
+    font-size: 50px; font-weight: 800; line-height: 1.15;
+    background: linear-gradient(180deg, #fff 15%, #909090 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .title-subtitle {
+    font-size: 16px; color: rgba(255,255,255,0.30);
+  }
+
+  /* ── Workflow area ── */
+  .workflow {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    flex: 1;
+    position: relative;
+    width: 100%;
+  }
+
+  /* Continuous vertical timeline line */
+  .workflow::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 6%;
+    bottom: 6%;
+    width: 2px;
+    background: linear-gradient(to bottom,
+      transparent,
+      rgba(245,158,11,0.10) 12%,
+      rgba(245,158,11,0.10) 88%,
+      transparent);
+    transform: translateX(-1px);
+    z-index: 0;
+  }
+
+  /* Each workflow row: LEFT | TIMELINE | RIGHT */
+  .wf-row {
+    display: flex; align-items: center;
+    width: 1440px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .wf-side {
+    flex: 1;
+    display: flex; align-items: center;
+    min-height: 140px;
+    padding: 6px 0;
+  }
+  .wf-side-left  { justify-content: flex-end;   padding-right: 44px; }
+  .wf-side-right { justify-content: flex-start;  padding-left: 44px; }
+
+  /* Timeline centre column */
+  .wf-center {
+    width: 56px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .wf-node {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 800;
+  }
+
+  .node-amber   { background: rgba(245,158,11,0.15); border: 2px solid rgba(245,158,11,0.50); color: #f59e0b; }
+  .node-emerald { background: rgba(16,185,129,0.15);  border: 2px solid rgba(16,185,129,0.50); color: #10b981; }
+  .node-cyan    { background: rgba(6,182,212,0.15);   border: 2px solid rgba(6,182,212,0.50);  color: #06b6d4; }
+  .node-rose    { background: rgba(244,63,94,0.15);   border: 2px solid rgba(244,63,94,0.50);  color: #fb7185; }
+
+  /* Arrow connector between rows */
+  .wf-arrow {
+    display: flex; align-items: center; justify-content: center;
+    height: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Screenshots ── */
+  .screenshot-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .screenshot-wrap::after {
+    content: '';
+    position: absolute; inset: -10px;
+    border-radius: 18px;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .glow-amber::after   { background: radial-gradient(ellipse, rgba(245,158,11,0.07) 0%, transparent 70%); }
+  .glow-emerald::after  { background: radial-gradient(ellipse, rgba(16,185,129,0.07) 0%, transparent 70%); }
+  .glow-cyan::after     { background: radial-gradient(ellipse, rgba(6,182,212,0.07) 0%, transparent 70%); }
+  .glow-rose::after     { background: radial-gradient(ellipse, rgba(244,63,94,0.07) 0%, transparent 70%); }
+
+  .screenshot {
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.50);
+    max-height: 140px;
+    max-width: 440px;
+    width: auto; height: auto;
+    display: block;
+  }
+
+  /* ── Description card ── */
+  .desc-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 16px 22px;
+    max-width: 480px;
+    width: 100%;
+  }
+  .desc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px; font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .desc-text {
+    font-size: 13px; color: rgba(255,255,255,0.40); line-height: 1.5;
+  }
+  .desc-param {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: rgba(255,255,255,0.22);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .desc-amber   { border-left: 3px solid #f59e0b; }
+  .desc-amber   .desc-title { color: #fbbf24; }
+
+  .desc-emerald { border-left: 3px solid #10b981; }
+  .desc-emerald .desc-title { color: #34d399; }
+
+  .desc-cyan    { border-left: 3px solid #06b6d4; }
+  .desc-cyan    .desc-title { color: #22d3ee; }
+
+  .desc-rose    { border-left: 3px solid #f43f5e; }
+  .desc-rose    .desc-title { color: #fb7185; }
+
+  /* ── Multi-Save strip ── */
+  .multi-strip {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    padding: 8px 0 0;
+    flex-shrink: 0;
+  }
+  .multi-label {
+    font-size: 14px; font-weight: 700;
+    color: rgba(245,158,11,0.65);
+  }
+  .multi-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.28);
+  }
+  .multi-sep {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    flex-shrink: 0;
+  }
+  .multi-files {
+    display: flex; gap: 12px; align-items: center;
+  }
+  .mini-file {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.025);
+  }
+  .mini-file-cyan   { color: rgba(6,182,212,0.55);   border-color: rgba(6,182,212,0.15); }
+  .mini-file-green  { color: rgba(34,197,94,0.55);    border-color: rgba(34,197,94,0.15); }
+  .mini-file-amber  { color: rgba(245,158,11,0.55);   border-color: rgba(245,158,11,0.15); }
+
+  /* ── Bottom bar ── */
+  .bottom-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding: 12px 0 22px;
+    flex-shrink: 0;
+  }
+  .bottom-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- ── Title ── -->
+  <div class="title-section">
+    <div class="title-heading">Save &amp; Load System</div>
+    <div class="title-subtitle">Named save files &mdash; Create, Read, Write, Reset &amp; Unload with one Blueprint node each</div>
+  </div>
+
+  <!-- ── Workflow ── -->
+  <div class="workflow">
+
+    <!-- Row 1  Screenshot LEFT  ·  Description RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="screenshot-wrap glow-amber">
+          <img src="assets/CreateOrLoadSetting.png" class="screenshot" alt="Create Or Load Setting">
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-amber">1</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="desc-card desc-amber">
+          <div class="desc-title">Create Or Load Setting</div>
+          <div class="desc-text">Opens or creates a named configuration file. All properties initialize with their defaults from Project Settings.</div>
+          <div class="desc-param">ConfigName &middot; OverrideWithCurrentProperties</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 1 → 2 -->
+    <div class="wf-arrow">
+      <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+        <line x1="10" y1="0" x2="10" y2="22" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+        <polygon points="5,20 10,27 15,20" fill="rgba(245,158,11,0.30)"/>
+      </svg>
+    </div>
+
+    <!-- Row 2  Description LEFT  ·  Screenshot RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="desc-card desc-emerald">
+          <div class="desc-title">Get &amp; Set Values</div>
+          <div class="desc-text">Read or write any property at runtime. One node per type &mdash; type-safe enums or legacy string keys. Changes persist automatically.</div>
+          <div class="desc-param">Get*Setting &middot; Set*Setting &middot; 9 types supported</div>
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-emerald">2</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="screenshot-wrap glow-emerald">
+          <img src="assets/GetFloatSetting.png" class="screenshot" alt="Get Float Setting">
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 2 → 3 -->
+    <div class="wf-arrow">
+      <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+        <line x1="10" y1="0" x2="10" y2="22" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+        <polygon points="5,20 10,27 15,20" fill="rgba(245,158,11,0.30)"/>
+      </svg>
+    </div>
+
+    <!-- Row 3  Screenshot LEFT  ·  Description RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="screenshot-wrap glow-cyan">
+          <img src="assets/ResetSetting.png" class="screenshot" alt="Reset Setting">
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-cyan">3</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="desc-card desc-cyan">
+          <div class="desc-title">Reset Setting</div>
+          <div class="desc-text">Restores all properties to their configured defaults. Works for both temporary and persistent configurations.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow 3 → 4 -->
+    <div class="wf-arrow">
+      <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+        <line x1="10" y1="0" x2="10" y2="22" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+        <polygon points="5,20 10,27 15,20" fill="rgba(245,158,11,0.30)"/>
+      </svg>
+    </div>
+
+    <!-- Row 4  Description LEFT  ·  Screenshot RIGHT -->
+    <div class="wf-row">
+      <div class="wf-side wf-side-left">
+        <div class="desc-card desc-rose">
+          <div class="desc-title">Unload Setting</div>
+          <div class="desc-text">Closes the current save file. Optionally keep values in memory or reset. Switch between player profiles seamlessly.</div>
+          <div class="desc-param">KeepProperties &middot; optional</div>
+        </div>
+      </div>
+      <div class="wf-center"><div class="wf-node node-rose">4</div></div>
+      <div class="wf-side wf-side-right">
+        <div class="screenshot-wrap glow-rose">
+          <img src="assets/UnloadSetting.png" class="screenshot" alt="Unload Setting">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Multi-Save strip ── -->
+  <div class="multi-strip">
+    <span class="multi-label">Multi-Save</span>
+    <div class="multi-sep"></div>
+    <div class="multi-files">
+      <span class="mini-file mini-file-cyan">Player1.ini</span>
+      <span class="mini-file mini-file-green">Player2.ini</span>
+      <span class="mini-file mini-file-amber">Server.ini</span>
+    </div>
+    <div class="multi-sep"></div>
+    <span class="multi-text">Unlimited named config files &mdash; per player, per server, per profile</span>
+  </div>
+
+  <!-- ── Bottom bar ── -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div>
+
+</body>
+</html>

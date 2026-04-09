@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - One Node Access | Gallery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background grid */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Background glow */
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Main layout */
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Title section */
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 38px;
+    padding-bottom: 22px;
+  }
+
+  .title-heading {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .title-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.30);
+    text-align: center;
+  }
+
+  /* Comparison section */
+  .comparison {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+    width: 1640px;
+    flex: 1;
+    max-height: 530px;
+  }
+
+  /* Panel shared */
+  .panel {
+    width: 750px;
+    border-radius: 16px;
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Left panel — Traditional */
+  .panel-left {
+    background: rgba(255,255,255,0.020);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Right panel — EGC */
+  .panel-right {
+    background: rgba(245,158,11,0.03);
+    border: 1px solid rgba(251,191,36,0.15);
+    box-shadow: 0 0 60px rgba(245,158,11,0.06);
+  }
+
+  /* Panel headers */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .panel-title-bad {
+    color: #ef4444;
+  }
+
+  .panel-title-good {
+    color: #fbbf24;
+  }
+
+  .icon-x {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(239,68,68,0.12);
+    flex-shrink: 0;
+  }
+
+  .icon-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.12);
+    flex-shrink: 0;
+  }
+
+  .icon-x-header {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.15);
+  }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .step-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    height: 46px;
+  }
+
+  .step-row:hover {
+    background: rgba(255,255,255,0.01);
+  }
+
+  .step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.30);
+    flex-shrink: 0;
+  }
+
+  .step-text {
+    font-size: 15px;
+    text-decoration: line-through;
+    color: rgba(255,255,255,0.25);
+    text-decoration-color: rgba(255,255,255,0.15);
+  }
+
+  .step-summary {
+    font-size: 14px;
+    color: rgba(239,68,68,0.60);
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  /* VS Divider */
+  .vs-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .vs-line {
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    left: 50%;
+    border-left: 1px dashed rgba(255,255,255,0.08);
+  }
+
+  .vs-text {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #0a0a0c;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.15);
+  }
+
+  /* Right panel content */
+  .node-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  /* Blueprint node mockup */
+  .bp-node {
+    width: 420px;
+    background: #1e1e24;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(245,158,11,0.05);
+  }
+
+  .bp-node-header {
+    background: linear-gradient(135deg, rgba(245,158,11,0.20) 0%, rgba(245,158,11,0.08) 100%);
+    border-bottom: 1px solid rgba(245,158,11,0.15);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bp-node-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fbbf24;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  .bp-node-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #f59e0b;
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.25);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .bp-node-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bp-pin-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bp-pin {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bp-pin-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bp-pin-dot-input {
+    background: #f59e0b;
+    box-shadow: 0 0 8px rgba(245,158,11,0.4);
+  }
+
+  .bp-pin-dot-output {
+    background: #22c55e;
+    box-shadow: 0 0 8px rgba(34,197,94,0.4);
+  }
+
+  .bp-pin-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  .bp-pin-value {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    padding: 4px 14px;
+    border-radius: 6px;
+  }
+
+  .bp-pin-value-input {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.20);
+    color: #fbbf24;
+  }
+
+  .bp-pin-value-output {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.20);
+    color: #22c55e;
+  }
+
+  .bp-pin-arrow {
+    color: rgba(255,255,255,0.15);
+    font-size: 14px;
+    margin: 0 6px;
+  }
+
+  .node-label {
+    font-size: 16px;
+    color: rgba(255,255,255,0.50);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .node-summary {
+    font-size: 14px;
+    color: rgba(251,191,36,0.60);
+    text-align: center;
+  }
+
+  /* Dual API Showcase */
+  .api-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    padding: 22px 0 0 0;
+    width: 1640px;
+  }
+
+  .api-card {
+    background: rgba(255,255,255,0.020);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 22px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+  }
+
+  .api-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .api-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .api-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .api-badge-recommended {
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: #f59e0b;
+  }
+
+  .api-badge-legacy {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.35);
+  }
+
+  .api-screenshot {
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .api-screenshot img {
+    display: block;
+    height: auto;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .api-middle-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .api-pill {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f59e0b;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.18);
+    padding: 6px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding-top: 20px;
+    padding-bottom: 32px;
+  }
+
+  .bottom-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- Title -->
+  <div class="title-section">
+    <div class="title-heading">One Node Access</div>
+    <div class="title-subtitle">Access any configuration value from any Blueprint &mdash; no references, no setup</div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="comparison">
+
+    <!-- Left Panel — Traditional -->
+    <div class="panel panel-left">
+      <div class="panel-header">
+        <div class="panel-title panel-title-bad">
+          <span class="icon-x">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 3l8 8M11 3l-8 8" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          Traditional Config Systems
+        </div>
+        <div class="icon-x-header">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6.5" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/>
+            <path d="M3.5 12.5l9-9" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text">Get reference to Config Manager</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text">Cast to correct subsystem type</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text">Find the right config subsystem</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text">Look up category string manually</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">5</div>
+          <div class="step-text">Look up key string manually</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">6</div>
+          <div class="step-text">Handle null checks at every step</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">7</div>
+          <div class="step-text">Finally get the value</div>
+        </div>
+      </div>
+
+      <div class="step-summary">7 steps &middot; Error-prone &middot; Tightly coupled</div>
+    </div>
+
+    <!-- VS Divider -->
+    <div class="vs-divider">
+      <div class="vs-line"></div>
+      <div class="vs-text">VS</div>
+    </div>
+
+    <!-- Right Panel — EGC -->
+    <div class="panel panel-right">
+      <div class="panel-header">
+        <div class="panel-title panel-title-good">
+          <span class="icon-check">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7.5l3 3 5-6" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          EGC &mdash; One Node
+        </div>
+      </div>
+
+      <div class="node-area">
+        <!-- Real Blueprint Node Screenshot -->
+        <img src="assets/GetFloatSetting.png" alt="Get Float Setting Node"
+             style="width: 420px; height: auto; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(245,158,11,0.05); image-rendering: -webkit-optimize-contrast;">
+
+        <div class="node-label">Works from any Blueprint. No references. No setup.</div>
+        <div class="node-summary">1 node &middot; Type-safe &middot; Context-free</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dual API Showcase -->
+  <div class="api-showcase">
+
+    <!-- Enum API -->
+    <div class="api-card">
+      <div class="api-card-header">
+        <div class="api-card-title">Enum API</div>
+        <div class="api-badge api-badge-recommended">Recommended</div>
+      </div>
+      <div class="api-screenshot">
+        <img src="assets/GetFloatSetting.png" alt="Get Float Setting" style="width: 380px;">
+      </div>
+    </div>
+
+    <!-- Middle badge -->
+    <div class="api-middle-badge">
+      <div class="api-pill">Both APIs &mdash; same result</div>
+    </div>
+
+    <!-- Legacy String API -->
+    <div class="api-card">
+      <div class="api-card-header">
+        <div class="api-card-title">Legacy String API</div>
+        <div class="api-badge api-badge-legacy">Legacy</div>
+      </div>
+      <div class="api-screenshot">
+        <img src="assets/GetterLegacy.png" alt="Get Float Setting Legacy" style="width: 380px;">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div>
+
+</body>
+</html>

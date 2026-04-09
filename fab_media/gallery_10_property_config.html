@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - Property Configuration | Gallery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background grid */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Background glow */
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Main layout */
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Title section */
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 38px;
+    padding-bottom: 28px;
+  }
+
+  .title-heading {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .title-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.30);
+    text-align: center;
+  }
+
+  /* Two-column content */
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 1720px;
+    flex: 1;
+    padding: 0 40px;
+  }
+
+  /* Left column — Screenshot */
+  .screenshot-col {
+    flex: 0 0 60%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .screenshot-frame {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+  }
+
+  .screenshot-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .screenshot-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    padding: 12px 16px;
+    background: #141416;
+  }
+
+  /* Right column — Feature card */
+  .feature-col {
+    flex: 0 0 35%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 32px;
+  }
+
+  .feature-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fbbf24;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .feature-card-desc {
+    font-size: 15px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .feature-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 16px 0;
+  }
+
+  .tags-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.30);
+    margin-bottom: 14px;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+  }
+
+  .tag-highlight {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.18);
+    color: #fbbf24;
+  }
+
+  .tag-dim {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* Bottom bar */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding-top: 20px;
+    padding-bottom: 32px;
+  }
+
+  .bottom-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- Title -->
+  <div class="title-section">
+    <div class="title-heading">Property Configuration</div>
+    <div class="title-subtitle">Read the full property setup at runtime &mdash; not just the value</div>
+  </div>
+
+  <!-- Two-column content -->
+  <div class="content">
+
+    <!-- Left — Screenshot -->
+    <div class="screenshot-col">
+      <div class="screenshot-frame">
+        <img src="assets/GetFloatPropertyConfig.png" alt="Get Float Property Configuration Blueprint">
+        <div class="screenshot-label">Get Float Property Configuration &rarr; Break structs for full metadata access</div>
+      </div>
+    </div>
+
+    <!-- Right — Feature card -->
+    <div class="feature-col">
+      <div class="feature-card">
+        <div class="feature-card-title">Read Full Property Config at Runtime</div>
+        <div class="feature-card-desc">One node gives you access to the complete property configuration &mdash; not just the value. Read Display Name, Description, Default Value, Cheat Value and more to build dynamic settings UI or debug tools.</div>
+        <div class="feature-divider"></div>
+        <div class="tags-label">Available metadata per property:</div>
+        <div class="tags-row">
+          <span class="tag tag-highlight">Display Name</span>
+          <span class="tag tag-highlight">Description</span>
+          <span class="tag tag-highlight">Default Value</span>
+          <span class="tag tag-dim">Cheat Value</span>
+          <span class="tag tag-dim">Category</span>
+          <span class="tag tag-dim">Section</span>
+          <span class="tag tag-dim">Type</span>
+          <span class="tag tag-dim">Widget Override</span>
+          <span class="tag tag-dim">Is Constant</span>
+          <span class="tag tag-dim">Is Hidden</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC Gallery 03 — Project Settings</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* ── Background layers ── */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Main layout ── */
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── Title Section ── */
+  .title-section {
+    margin-top: 38px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .title-text {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .title-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.30);
+    text-align: center;
+  }
+
+  /* ── Content Area ── */
+  .content-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    padding: 0 52px;
+    margin-top: 10px;
+  }
+
+  /* ======== LEFT: Screenshot Panels ======== */
+  .screenshots {
+    display: flex;
+    gap: 18px;
+    flex-shrink: 0;
+    align-items: flex-start;
+  }
+
+  .screenshot-frame {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.03);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .screenshot-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .screenshot-label {
+    padding: 10px 16px;
+    background: #141416;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+  }
+
+  /* ======== RIGHT: Callout Cards ======== */
+  .callouts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 340px;
+    flex-shrink: 0;
+  }
+
+  .callout-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid rgba(245,158,11,0.30);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(251,191,36,0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fbbf24;
+    flex-shrink: 0;
+  }
+
+  .callout-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .callout-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+
+  .callout-desc {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: rgba(255,255,255,0.42);
+  }
+
+  /* ── Bottom Bar ── */
+  .bottom-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding-bottom: 28px;
+    padding-top: 10px;
+  }
+
+  .bottom-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- ===== TITLE ===== -->
+  <div class="title-section">
+    <div class="title-text">Project Settings</div>
+    <div class="title-sub">Define all properties in one place — no code required</div>
+  </div>
+
+  <!-- ===== CONTENT: Panel + Callouts ===== -->
+  <div class="content-area">
+
+    <!-- LEFT: Real UE Editor Screenshots -->
+    <div class="screenshots">
+      <div class="screenshot-frame" style="width: 620px;">
+        <img src="assets/settingsmenu.png" alt="EGC Plugin Settings Overview">
+        <div class="screenshot-label">Plugin Settings Overview</div>
+      </div>
+      <div class="screenshot-frame" style="width: 620px;">
+        <img src="assets/propertylist.png" alt="Property Details">
+        <div class="screenshot-label">Property Configuration Details</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Callout Cards -->
+    <div class="callouts">
+
+      <div class="callout-card">
+        <div class="callout-num">1</div>
+        <div class="callout-body">
+          <div class="callout-title">Property List</div>
+          <div class="callout-desc">All properties at a glance with type, section, and default value</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">2</div>
+        <div class="callout-body">
+          <div class="callout-title">Type Selection</div>
+          <div class="callout-desc">9 supported types via dropdown — from Boolean to Transform</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">3</div>
+        <div class="callout-body">
+          <div class="callout-title">Default Values</div>
+          <div class="callout-desc">Type-specific defaults used when no config file exists</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">4</div>
+        <div class="callout-body">
+          <div class="callout-title">Display Name</div>
+          <div class="callout-desc">Human-readable names and descriptions for auto-generated UI</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">5</div>
+        <div class="callout-body">
+          <div class="callout-title">Hidden / Constant</div>
+          <div class="callout-desc">Control visibility and editability per property</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">6</div>
+        <div class="callout-body">
+          <div class="callout-title">Save Location</div>
+          <div class="callout-desc">Choose .ini or SaveGame storage individually per property</div>
+        </div>
+      </div>
+
+      <div class="callout-card">
+        <div class="callout-num">7</div>
+        <div class="callout-body">
+          <div class="callout-title">Anti-Cheat</div>
+          <div class="callout-desc">Hash-based tamper detection for SaveGame properties with per-property cheat values</div>
+        </div>
+      </div>
+
+    </div><!-- /callouts -->
+
+  </div><!-- /content-area -->
+
+  <!-- ===== BOTTOM BAR ===== -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div><!-- /main -->
+
+</body>
+</html>

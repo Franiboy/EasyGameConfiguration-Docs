@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - 9 Data Types | Gallery</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background grid */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Background glow */
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Main layout */
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* Title section */
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 38px;
+    padding-bottom: 28px;
+  }
+
+  .title-heading {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .title-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.30);
+    text-align: center;
+  }
+
+  /* 3x3 Grid */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+    width: 1600px;
+    height: 700px;
+  }
+
+  /* Card */
+  .type-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .type-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  /* Icon circle */
+  .type-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .type-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .type-enum {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+  }
+
+  .type-count {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+  }
+
+  .type-struct {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    text-align: center;
+  }
+
+  /* ---- Per-type accent colors ---- */
+
+  /* String - Cyan #06b6d4 */
+  .card-string::before { background: rgba(6,182,212,0.4); }
+  .card-string .type-icon { background: rgba(6,182,212,0.10); border: 1.5px solid rgba(6,182,212,0.30); color: #06b6d4; }
+  .card-string .type-struct { color: rgba(6,182,212,0.5); }
+
+  /* Integer - Green #22c55e */
+  .card-integer::before { background: rgba(34,197,94,0.4); }
+  .card-integer .type-icon { background: rgba(34,197,94,0.10); border: 1.5px solid rgba(34,197,94,0.30); color: #22c55e; }
+  .card-integer .type-struct { color: rgba(34,197,94,0.5); }
+
+  /* Float - Amber #f59e0b */
+  .card-float::before { background: rgba(245,158,11,0.4); }
+  .card-float .type-icon { background: rgba(245,158,11,0.10); border: 1.5px solid rgba(245,158,11,0.30); color: #f59e0b; }
+  .card-float .type-struct { color: rgba(245,158,11,0.5); }
+
+  /* Boolean - Red #ef4444 */
+  .card-boolean::before { background: rgba(239,68,68,0.4); }
+  .card-boolean .type-icon { background: rgba(239,68,68,0.10); border: 1.5px solid rgba(239,68,68,0.30); color: #ef4444; }
+  .card-boolean .type-struct { color: rgba(239,68,68,0.5); }
+
+  /* Vector - Purple #a855f7 */
+  .card-vector::before { background: rgba(168,85,247,0.4); }
+  .card-vector .type-icon { background: rgba(168,85,247,0.10); border: 1.5px solid rgba(168,85,247,0.30); color: #a855f7; }
+  .card-vector .type-struct { color: rgba(168,85,247,0.5); }
+
+  /* Vector2D - Blue #3b82f6 */
+  .card-vector2d::before { background: rgba(59,130,246,0.4); }
+  .card-vector2d .type-icon { background: rgba(59,130,246,0.10); border: 1.5px solid rgba(59,130,246,0.30); color: #3b82f6; }
+  .card-vector2d .type-struct { color: rgba(59,130,246,0.5); }
+
+  /* Rotator - Orange #f97316 */
+  .card-rotator::before { background: rgba(249,115,22,0.4); }
+  .card-rotator .type-icon { background: rgba(249,115,22,0.10); border: 1.5px solid rgba(249,115,22,0.30); color: #f97316; }
+  .card-rotator .type-struct { color: rgba(249,115,22,0.5); }
+
+  /* Color - Pink #ec4899 */
+  .card-color::before { background: rgba(236,72,153,0.4); }
+  .card-color .type-icon { background: rgba(236,72,153,0.10); border: 1.5px solid rgba(236,72,153,0.30); color: #ec4899; }
+  .card-color .type-struct { color: rgba(236,72,153,0.5); }
+
+  /* Transform - Teal #14b8a6 */
+  .card-transform::before { background: rgba(20,184,166,0.4); }
+  .card-transform .type-icon { background: rgba(20,184,166,0.10); border: 1.5px solid rgba(20,184,166,0.30); color: #14b8a6; }
+  .card-transform .type-struct { color: rgba(20,184,166,0.5); }
+
+  /* Bottom bar */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    padding-top: 26px;
+    padding-bottom: 32px;
+  }
+
+  .bottom-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- Title -->
+  <div class="title-section">
+    <div class="title-heading">9 Data Types</div>
+    <div class="title-subtitle">250 Properties per Type &middot; Enum-Based + Legacy String API</div>
+  </div>
+
+  <!-- 3x3 Grid -->
+  <div class="types-grid">
+
+    <!-- Row 1 -->
+
+    <!-- String -->
+    <div class="type-card card-string">
+      <div class="type-icon">Aa</div>
+      <div class="type-name">String</div>
+      <div class="type-enum">E_StringProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCStringType</div>
+    </div>
+
+    <!-- Integer -->
+    <div class="type-card card-integer">
+      <div class="type-icon">42</div>
+      <div class="type-name">Integer</div>
+      <div class="type-enum">E_IntegerProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCIntegerType</div>
+    </div>
+
+    <!-- Float -->
+    <div class="type-card card-float">
+      <div class="type-icon">3.14</div>
+      <div class="type-name">Float</div>
+      <div class="type-enum">E_FloatProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCFloatType</div>
+    </div>
+
+    <!-- Row 2 -->
+
+    <!-- Boolean -->
+    <div class="type-card card-boolean">
+      <div class="type-icon">
+        <svg width="26" height="22" viewBox="0 0 26 22" fill="none">
+          <path d="M2 12l5 5L15 4" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 6l6 6M24 6l-6 6" stroke="rgba(239,68,68,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="type-name">Boolean</div>
+      <div class="type-enum">E_BooleanProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCBooleanType</div>
+    </div>
+
+    <!-- Vector -->
+    <div class="type-card card-vector">
+      <div class="type-icon" style="font-size:18px; letter-spacing:1px;">XYZ</div>
+      <div class="type-name">Vector</div>
+      <div class="type-enum">E_VectorProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCVectorType</div>
+    </div>
+
+    <!-- Vector2D -->
+    <div class="type-card card-vector2d">
+      <div class="type-icon" style="font-size:20px; letter-spacing:1px;">XY</div>
+      <div class="type-name">Vector2D</div>
+      <div class="type-enum">E_Vector2DProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCVector2DType</div>
+    </div>
+
+    <!-- Row 3 -->
+
+    <!-- Rotator -->
+    <div class="type-card card-rotator">
+      <div class="type-icon">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 3a10 10 0 0 1 9.5 13" stroke="#f97316" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M13 3a10 10 0 0 0-9.5 13" stroke="rgba(249,115,22,0.35)" stroke-width="2.2" stroke-linecap="round"/>
+          <polygon points="22,13 25,17.5 19.5,17.5" fill="#f97316"/>
+          <circle cx="13" cy="13" r="1.5" fill="#f97316"/>
+        </svg>
+      </div>
+      <div class="type-name">Rotator</div>
+      <div class="type-enum">E_RotatorProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCRotatorType</div>
+    </div>
+
+    <!-- Color -->
+    <div class="type-card card-color">
+      <div class="type-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="8" height="8" rx="2" fill="#ec4899"/>
+          <rect x="13" y="3" width="8" height="8" rx="2" fill="#a855f7"/>
+          <rect x="3" y="13" width="8" height="8" rx="2" fill="#3b82f6"/>
+          <rect x="13" y="13" width="8" height="8" rx="2" fill="#22c55e"/>
+        </svg>
+      </div>
+      <div class="type-name">Color</div>
+      <div class="type-enum">E_ColorProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCColorType</div>
+    </div>
+
+    <!-- Transform -->
+    <div class="type-card card-transform">
+      <div class="type-icon" style="font-size:24px;">T</div>
+      <div class="type-name">Transform</div>
+      <div class="type-enum">E_TransformProperties</div>
+      <div class="type-count">250 properties</div>
+      <div class="type-struct">FEGCTransformType</div>
+    </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <span>EGC v1.3</span>
+    <div class="bottom-dot"></div>
+    <span>UE 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64, Android, Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+  </div>
+
+</div>
+
+</body>
+</html>

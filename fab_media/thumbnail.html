@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - EasyGameConfiguration | Amber Thumbnail</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  /* Background grid */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Background glow */
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Main layout */
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  /* ============ SECTION 1: FLOW ============ */
+  .flow-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1.15);
+  }
+
+  /* Shared dark card */
+  .dark-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .card-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .dot-red { width: 9px; height: 9px; border-radius: 50%; background: #ff5f57; }
+  .dot-yellow { width: 9px; height: 9px; border-radius: 50%; background: #febc2e; }
+  .dot-green { width: 9px; height: 9px; border-radius: 50%; background: #28c840; }
+
+  .card-titlebar-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.50);
+    margin-left: 6px;
+  }
+
+  /* Left panel - Project Settings */
+  .panel-left {
+    width: 280px;
+  }
+
+  .settings-rows {
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .settings-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    flex-shrink: 0;
+  }
+
+  .settings-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.72);
+    flex: 1;
+  }
+
+  .settings-type {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.04);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Connector arrows */
+  .connector-arrow {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .connector-branch {
+    width: 100px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Center block - EGC Plugin */
+  .plugin-hero {
+    background: linear-gradient(155deg, rgba(245,158,11,0.10), rgba(245,158,11,0.015));
+    border: 1.5px solid rgba(251,191,36,0.22);
+    border-radius: 20px;
+    padding: 36px 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 0 60px rgba(245,158,11,0.08), 0 0 120px rgba(245,158,11,0.04);
+  }
+
+  .plugin-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    background: rgba(245,158,11,0.12);
+    border: 1.5px solid rgba(251,191,36,0.30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .plugin-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .plugin-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.30);
+  }
+
+  /* Right panels */
+  .panels-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .panel-right {
+    width: 300px;
+  }
+
+  .code-block {
+    padding: 10px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+  }
+
+  .code-accent {
+    color: #f59e0b;
+  }
+
+  .code-value {
+    color: rgba(255,255,255,0.60);
+  }
+
+  .code-section {
+    color: rgba(245,158,11,0.50);
+  }
+
+  .code-indent {
+    padding-left: 14px;
+  }
+
+  /* ============ SECTION 2: TITLE ============ */
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .product-name {
+    font-size: 88px;
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: 1.15;
+    text-align: center;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tagline-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .tagline-value {
+    color: #fbbf24;
+  }
+
+  .tagline-label {
+    color: rgba(255,255,255,0.60);
+  }
+
+  .tagline-sep {
+    color: rgba(255,255,255,0.10);
+    margin: 0 18px;
+  }
+
+  .subtitle-text {
+    font-size: 17px;
+    color: rgba(255,255,255,0.30);
+  }
+
+  /* ============ SECTION 3: TYPE BADGES ============ */
+  .badges-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .badge {
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-size: 15.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-highlight {
+    border: 1px solid rgba(251,191,36,0.35);
+    color: #fbbf24;
+    background: rgba(245,158,11,0.07);
+  }
+
+  .badge-dim {
+    border: 1px solid rgba(255,255,255,0.055);
+    color: rgba(255,255,255,0.30);
+    background: transparent;
+  }
+
+  /* ============ SECTION 4: STATS ============ */
+  .stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  .stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-number {
+    font-size: 52px;
+    font-weight: 800;
+    color: #f59e0b;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.30);
+  }
+
+  /* ============ SECTION 5: BOTTOM BAR ============ */
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+  }
+
+  .bottom-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+
+  <!-- ===== SECTION 1: FLOW ===== -->
+  <div class="flow-section">
+
+    <!-- Left: Project Settings Panel -->
+    <div class="dark-card panel-left">
+      <div class="card-titlebar">
+        <div class="dot-red"></div>
+        <div class="dot-yellow"></div>
+        <div class="dot-green"></div>
+        <span class="card-titlebar-label">Project Settings</span>
+      </div>
+      <div class="settings-rows">
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">MasterVolume</span>
+          <span class="settings-type">Float</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">Difficulty</span>
+          <span class="settings-type">Integer</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">PlayerName</span>
+          <span class="settings-type">String</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">InvertY</span>
+          <span class="settings-type">Boolean</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">SpawnPoint</span>
+          <span class="settings-type">Vector</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">HUDColor</span>
+          <span class="settings-type">Color</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-dot"></div>
+          <span class="settings-name">CameraRot</span>
+          <span class="settings-type">Rotator</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector: Left → Center -->
+    <div class="connector-arrow">
+      <svg width="80" height="24" viewBox="0 0 80 24">
+        <line x1="0" y1="12" x2="62" y2="12" stroke="rgba(245,158,11,0.45)" stroke-width="2"/>
+        <polygon points="62,6 76,12 62,18" fill="rgba(245,158,11,0.50)"/>
+      </svg>
+    </div>
+
+    <!-- Center: EGC Plugin Hero -->
+    <div class="plugin-hero">
+      <div class="plugin-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
+      <div class="plugin-title">EGC Plugin</div>
+      <div class="plugin-subtitle">Blueprint &amp; C++ &middot; 94 Functions</div>
+    </div>
+
+    <!-- Connector: Center → Right (branching) -->
+    <div class="connector-branch">
+      <svg width="100" height="180" viewBox="0 0 100 180">
+        <!-- Main line from left to split point -->
+        <line x1="0" y1="90" x2="30" y2="90" stroke="rgba(245,158,11,0.45)" stroke-width="2"/>
+        <!-- Top branch curve -->
+        <path d="M30,90 C50,90 55,40 80,40" fill="none" stroke="rgba(245,158,11,0.45)" stroke-width="2"/>
+        <!-- Bottom branch curve -->
+        <path d="M30,90 C50,90 55,140 80,140" fill="none" stroke="rgba(245,158,11,0.45)" stroke-width="2"/>
+        <!-- Top arrowhead -->
+        <polygon points="78,34 92,40 78,46" fill="rgba(245,158,11,0.50)"/>
+        <!-- Bottom arrowhead -->
+        <polygon points="78,134 92,140 78,146" fill="rgba(245,158,11,0.50)"/>
+      </svg>
+    </div>
+
+    <!-- Right: Two stacked output panels -->
+    <div class="panels-right">
+
+      <!-- Blueprint Editor -->
+      <div class="dark-card panel-right">
+        <div class="card-titlebar">
+          <div class="dot-red"></div>
+          <div class="dot-yellow"></div>
+          <div class="dot-green"></div>
+          <span class="card-titlebar-label">Blueprint Editor</span>
+        </div>
+        <div class="code-block">
+          <div class="code-accent">GetFloatProperty</div>
+          <div class="code-indent code-value">MasterVolume &rarr; 0.8</div>
+          <div class="code-accent">SetIntegerProperty</div>
+          <div class="code-indent code-value">Difficulty &rarr; 3</div>
+        </div>
+      </div>
+
+      <!-- GameConfig.ini -->
+      <div class="dark-card panel-right">
+        <div class="card-titlebar">
+          <div class="dot-red"></div>
+          <div class="dot-yellow"></div>
+          <div class="dot-green"></div>
+          <span class="card-titlebar-label">GameConfig.ini</span>
+        </div>
+        <div class="code-block">
+          <div class="code-section">[Audio]</div>
+          <div class="code-value">MasterVolume=0.8</div>
+          <div class="code-section">[Gameplay]</div>
+          <div class="code-value">Difficulty=2</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===== SECTION 2: TITLE ===== -->
+  <div class="title-section">
+    <div class="product-name">EasyGame<br>Configuration</div>
+    <div class="tagline-row">
+      <span class="tagline-value">9</span><span class="tagline-label">&nbsp;Types</span>
+      <span class="tagline-sep">|</span>
+      <span class="tagline-value">94</span><span class="tagline-label">&nbsp;BP Functions</span>
+      <span class="tagline-sep">|</span>
+      <span class="tagline-value">250</span><span class="tagline-label">&nbsp;Props/Type</span>
+      <span class="tagline-sep">|</span>
+      <span class="tagline-value">v1.3</span>
+    </div>
+    <div class="subtitle-text">Define once in Project Settings. Access anywhere with one Blueprint node.</div>
+  </div>
+
+  <!-- ===== SECTION 3: TYPE BADGES ===== -->
+  <div class="badges-row">
+    <div class="badge badge-highlight">Boolean</div>
+    <div class="badge badge-highlight">Integer</div>
+    <div class="badge badge-highlight">Float</div>
+    <div class="badge badge-highlight">String</div>
+    <div class="badge badge-highlight">Vector2D</div>
+    <div class="badge badge-highlight">Vector</div>
+    <div class="badge badge-highlight">Rotator</div>
+    <div class="badge badge-highlight">Color</div>
+    <div class="badge badge-highlight">Transform</div>
+  </div>
+
+  <!-- ===== SECTION 4: STATS ===== -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-number">9</div>
+      <div class="stat-label">Types</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">94</div>
+      <div class="stat-label">BP Functions</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">250</div>
+      <div class="stat-label">Props / Type</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Dependencies</div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 5: BOTTOM BAR ===== -->
+  <div class="bottom-bar">
+    <span>Unreal Engine 5.5+</span>
+    <div class="bottom-dot"></div>
+    <span>Win64 / Android / Linux</span>
+    <div class="bottom-dot"></div>
+    <span>Blueprint &amp; C++</span>
+    <div class="bottom-dot"></div>
+    <span>Auto-Generated .ini</span>
+  </div>
+
+</div>
+
+</body>
+</html>

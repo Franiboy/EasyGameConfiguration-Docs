@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>EGC - Blueprint Workflow | Gallery 04</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #0a0a0c;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    position: relative;
+  }
+
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(245,158,11,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ============ TITLE ============ */
+  .title-section {
+    margin-top: 44px;
+    text-align: center;
+  }
+
+  .title-section h1 {
+    font-size: 52px;
+    font-weight: 800;
+    background: linear-gradient(180deg, #ffffff 15%, #909090 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.15;
+  }
+
+  .title-section .subtitle {
+    margin-top: 12px;
+    font-size: 17px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.30);
+    letter-spacing: 0.2px;
+  }
+
+  /* ============ TIMELINE CONTAINER ============ */
+  .timeline-wrap {
+    position: relative;
+    width: 1600px;
+    height: 620px;
+    margin-top: 30px;
+  }
+
+  /* Horizontal line at vertical center (y=310) */
+  .timeline-line {
+    position: absolute;
+    top: 309px;
+    left: 100px;
+    right: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(245,158,11,0.08), rgba(245,158,11,0.30) 15%, rgba(245,158,11,0.30) 85%, rgba(245,158,11,0.08));
+  }
+
+  /* Small decorative end caps */
+  .timeline-line::before,
+  .timeline-line::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(245,158,11,0.18);
+  }
+  .timeline-line::before { left: -4px; }
+  .timeline-line::after { right: -4px; }
+
+  /* Timeline dot */
+  .t-dot {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid;
+    font-size: 15px;
+    font-weight: 700;
+    background: #0a0a0c;
+    z-index: 3;
+    top: 292px; /* 310 - 18 */
+  }
+
+  /* Connector */
+  .t-conn {
+    position: absolute;
+    width: 2px;
+    z-index: 1;
+  }
+
+  /* Phase cards */
+  .phase-card {
+    position: absolute;
+    width: 300px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 20px 24px;
+    z-index: 2;
+  }
+
+  .phase-card .phase-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .phase-card .phase-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    margin-bottom: 2px;
+  }
+
+  .phase-card code {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.70);
+    display: block;
+    line-height: 1.75;
+  }
+
+  .phase-card .note {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.22);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* Pills */
+  .pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.55);
+  }
+
+  .return-val {
+    color: rgba(255,255,255,0.35);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+  }
+
+  /* ============ STATS ROW ============ */
+  .stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    margin-top: auto;
+    margin-bottom: 72px;
+  }
+
+  .stat { text-align: center; }
+
+  .stat .stat-number {
+    font-size: 40px;
+    font-weight: 700;
+    color: #f59e0b;
+    line-height: 1;
+  }
+
+  .stat .stat-label {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.30);
+  }
+
+  /* ============ BOTTOM BAR ============ */
+  .bottom-bar {
+    position: absolute;
+    bottom: 28px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 15px;
+    color: rgba(255,255,255,0.22);
+    z-index: 1;
+  }
+
+  .bottom-bar .dot-sep {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.22);
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="main">
+  <!-- TITLE -->
+  <div class="title-section">
+    <h1>Blueprint Workflow</h1>
+    <div class="subtitle">Five steps from definition to persistence &mdash; all with single Blueprint nodes</div>
+  </div>
+
+  <!-- TIMELINE -->
+  <!--
+    Layout math:
+    - Container: 1600 x 620, timeline line at y=310
+    - 5 phase centers spaced across 1600px: x = 150, 430, 710, 990, 1270
+    - Dots: 36x36, top=292 (310-18), left = center - 18
+    - Cards: 300px wide, left = center - 150
+    - Above cards: connector from card bottom to dot top
+      connector top = 248 (292-44), height = 44
+      card bottom at y=248 → card top varies by content (~100-160px tall) → top ≈ 248 - cardHeight
+    - Below cards: connector from dot bottom to card top
+      connector top = 328 (292+36), height = 44
+      card top = 372
+  -->
+  <div class="timeline-wrap">
+    <div class="timeline-line"></div>
+
+    <!-- ════════ PHASE 1 — DEFINE (above) ════════ -->
+    <!-- center-x: 150 -->
+    <div class="t-dot" style="left: 132px; border-color: #06b6d4; color: #06b6d4; background: rgba(6,182,212,0.08);">1</div>
+    <div class="t-conn" style="left: 149px; top: 244px; height: 48px; background: rgba(6,182,212,0.20);"></div>
+    <div class="phase-card" style="left: 0; bottom: 376px; border-left: 3px solid #06b6d4;">
+      <div class="phase-title" style="color: #06b6d4;">DEFINE</div>
+      <div class="phase-desc">Define property in Project Settings</div>
+      <div class="pills">
+        <span class="pill">MasterVolume</span>
+        <span class="pill">Float</span>
+        <span class="pill">Default: 0.8</span>
+      </div>
+    </div>
+
+    <!-- ════════ PHASE 2 — GET / SET (below) ════════ -->
+    <!-- center-x: 430 -->
+    <div class="t-dot" style="left: 412px; border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,0.08);">2</div>
+    <div class="t-conn" style="left: 429px; top: 328px; height: 48px; background: rgba(34,197,94,0.20);"></div>
+    <div class="phase-card" style="left: 280px; top: 376px; border-left: 3px solid #22c55e;">
+      <div class="phase-title" style="color: #22c55e;">GET / SET</div>
+      <code>GetFloatProperty(MasterVolume) <span class="return-val">&rarr; 0.8</span></code>
+      <code>SetFloatProperty(MasterVolume, 0.5)</code>
+      <div class="note">Also: GetFloatPropertyLegacy("Audio", "MasterVolume")</div>
+    </div>
+
+    <!-- ════════ PHASE 3 — DELEGATES (above) ════════ -->
+    <!-- center-x: 710 -->
+    <div class="t-dot" style="left: 692px; border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.08);">3</div>
+    <div class="t-conn" style="left: 709px; top: 244px; height: 48px; background: rgba(245,158,11,0.20);"></div>
+    <div class="phase-card" style="left: 560px; bottom: 376px; border-left: 3px solid #f59e0b;">
+      <div class="phase-title" style="color: #f59e0b;">DELEGATES</div>
+      <code>OnFloatChangedSetting(MasterVolume)</code>
+      <div class="phase-desc" style="margin-top: 8px;">Subscribe from any Blueprint</div>
+      <div class="phase-desc">No references needed</div>
+    </div>
+
+    <!-- ════════ PHASE 4 — WIDGETS (below) ════════ -->
+    <!-- center-x: 990 -->
+    <div class="t-dot" style="left: 972px; border-color: #a855f7; color: #a855f7; background: rgba(168,85,247,0.08);">4</div>
+    <div class="t-conn" style="left: 989px; top: 328px; height: 48px; background: rgba(168,85,247,0.20);"></div>
+    <div class="phase-card" style="left: 840px; top: 376px; border-left: 3px solid #a855f7;">
+      <div class="phase-title" style="color: #a855f7;">WIDGETS</div>
+      <code>GetAllFloatWidgets() <span class="return-val">&rarr; Widget[]</span></code>
+      <div class="phase-desc" style="margin-top: 8px;">Auto-generated settings UI</div>
+      <div class="phase-desc">One call creates all widgets</div>
+    </div>
+
+    <!-- ════════ PHASE 5 — SAVE / LOAD (above) ════════ -->
+    <!-- center-x: 1270 -->
+    <div class="t-dot" style="left: 1252px; border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.08);">5</div>
+    <div class="t-conn" style="left: 1269px; top: 244px; height: 48px; background: rgba(16,185,129,0.20);"></div>
+    <div class="phase-card" style="left: 1120px; bottom: 376px; border-left: 3px solid #10b981;">
+      <div class="phase-title" style="color: #10b981;">SAVE / LOAD</div>
+      <code>CreateConfigurationFile()</code>
+      <code>LoadConfigurationFile()</code>
+      <code>ResetAllSettings()</code>
+    </div>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-number">1</div>
+      <div class="stat-label">Node per Operation</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Setup Required</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">9</div>
+      <div class="stat-label">Types Supported</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  EGC v1.3<span class="dot-sep"></span>UE 5.5+<span class="dot-sep"></span>Win64, Android, Linux<span class="dot-sep"></span>Blueprint &amp; C++
+</div>
+
+</body>
+</html>
